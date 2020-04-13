@@ -1,0 +1,18 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: {{ .Values.deployment.name }}
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Values.monitoring.namespace }}
+spec:
+  endpoints:
+  - interval: {{ .Values.monitoring.interval }}
+    port: {{ .Values.monitoring.port }}
+    path: {{ .Values.monitoring.path }}
+  jobLabel: {{ .Values.monitoring.jobLabel }}
+  namespaceSelector:
+    any: true
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ .Release.Name }}-{{ .Values.deployment.name }}

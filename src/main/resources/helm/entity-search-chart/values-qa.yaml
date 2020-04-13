@@ -1,0 +1,88 @@
+version: alpha
+namespace: genie-ms
+deployment:
+  name: entity-search
+  replicaCount: 1
+  hostAlias:
+    sso:
+      ip: 192.168.7.37
+      hostName: sso.yesgenie.com
+    cust360:
+      ip: 192.168.7.37
+      hostName: cust360.yesgenie.com
+  image:
+    name: xebiadockerrepo:443/entity-search
+    tag: latest
+    pullPolicy: Always
+  ports:
+    name1: http
+    containerPort1: 8080
+  readinessProbe:
+    httpGet:
+      path: /actuator/health
+      port: 8080
+    initialDelaySeconds: 15
+    periodSeconds: 10
+  livenessProbe:
+    httpGet:
+      path: /actuator/health
+      port: 8080
+    initialDelaySeconds: 60
+    periodSeconds: 100
+
+service:
+  name: entity-search
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+  portName: http
+
+
+configMap:
+  name: search-config
+  elasticHost: elastic-service.default.svc.cluster.local,elastic-service.default.svc.cluster.local
+  elasticPort: "'9200'"
+  connectionTimeOut: "'6000'"
+  socketTimeOut: "'6000'"
+  retryTimeOut: "'20000'"
+  badInputMessage: Search input is not in correct format!
+  authServerService: https://sso.yesgenie.com:31390
+  yblMsRealm: YBL_MS_REALM
+  msClientId: genie-backend
+  maxLimitToSearch: "'200'"
+  loggingLevelRoot: INFO
+  elasticLoggingLevel: INFO
+  defaultSortField: cust_open_date
+  defaultSortOrder: DESC
+  gnyEntMapper:
+  gnyEntMaster:
+
+virtualService:
+  clusterName: cluster.local
+  name: entity-search
+  uri1: /api/entity/search
+  host1: '"*"'
+  gateway1: https-gateway
+  route:
+    destination1:
+      port:
+        number: 80
+
+secret:
+  name: aes-secret
+  aes_secret_key: eWVzYmFua2R3aDE4MTkyMA==
+  userName:
+  password:
+
+autoscaler:
+  name: entity-search-as
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 60
+
+monitoring:
+  namespace: monitoring
+  interval:  30s
+  port: http
+  path: /actuator/prometheus
+  jobLabel: springboot

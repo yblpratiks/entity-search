@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ .Release.Name }}-{{ .Values.service.name }}
+spec:
+  host: {{ .Release.Name }}-{{ .Values.service.name }}.{{ .Values.namespace }}.svc.cluster.local
+  trafficPolicy:
+    connectionPool:
+      http:
+        http1MaxPendingRequests: 1024
+        maxRequestsPerConnection: 10
+        http2MaxRequests: 1024
+        maxRetries: 3
+    outlierDetection:
+      consecutiveErrors: 7
+      interval: 1s
+      baseEjectionTime: 3m
+      maxEjectionPercent: 100

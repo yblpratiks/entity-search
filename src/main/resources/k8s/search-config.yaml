@@ -1,0 +1,18 @@
+apiVersion: v1
+data:
+    elasticHost: elastic-service.default.svc.cluster.local
+    elasticPort: "9200"
+    connectionTimeOut: "5000"
+    socketTimeOut: "60000"
+    retryTimeOut: "60000"
+    badInputMessage: Search input is not in correct format!
+    AUTH_SERVER_SERVICE: http://sso.yesgenie.com:30978
+    YBL_MS_REALM: YBL_MS_REALM
+    MS_CLIENT_ID: genie-backend
+    MAXIMUM_LIMIT_TO_SEARCH: "10000"
+    GNY_ENTITY_MAPPER: gny_entity_mapper
+    GNY_ENTITY_MASTER: gny_entity_master
+kind: ConfigMap
+metadata:
+  name: search-config
+  namespace: genie-ms

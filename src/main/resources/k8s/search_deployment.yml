@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: customer-search
+  namespace: genie-ms
+  labels:
+    app: entity-search
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: entity-search
+  template:
+    metadata:
+      labels:
+        app: entity-search
+    spec:
+      hostAliases:
+      - ip: "192.168.3.243"
+        hostnames:
+        - "yesgenie.com"
+      containers:
+      - name: entity-search
+        image: xebiadockerrepo:443/entity-search:0-1-0
+        imagePullPolicy: Always
+        ports:
+        - name: service
+          containerPort: 8080
+        env:
+          - name: CONNECTION_TIME_OUT
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: connectionTimeOut
+          - name: SOCKET_TIME_OUT
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: socketTimeOut
+          - name: RETRY_TIME_OUT
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: retryTimeOut
+          - name: ELASTIC_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: elasticHost
+          - name: ELASTIC_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: elasticPort
+          - name: ZIPKIN_URL
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: zipkinUrl
+          - name: FIELD_MATCH_CONFIGURATION
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: fieldMatchConfiguration
+          - name: ENCRYPTION_KEY
+            valueFrom:
+              secretKeyRef:
+                name: aes-secret
+                key: aes_secret_key
+          - name: AUTH_SERVER_SERVICE
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: AUTH_SERVER_SERVICE
+          - name: YBL_MS_REALM
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: YBL_MS_REALM
+          - name: MS_CLIENT_ID
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: MS_CLIENT_ID
+          - name: MAXIMUM_LIMIT_TO_SEARCH
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: MAXIMUM_LIMIT_TO_SEARCH
+          - name: GNY_ENTITY_MAPPER
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: GNY_ENTITY_MAPPER
+          - name: GNY_ENTITY_MASTER
+            valueFrom:
+              configMapKeyRef:
+                name: search-config
+                key: GNY_ENTITY_MASTER
+
+
+
+
+
+
+
+
+       
+

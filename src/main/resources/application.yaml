@@ -1,0 +1,208 @@
+spring:
+  profiles:
+    active: prod
+---
+
+spring:
+  profiles: prod
+elasticHost: ${ELASTIC_HOST}
+elasticPort: ${ELASTIC_PORT}
+connectionTimeout: ${CONNECTION_TIME_OUT}
+socketTimeout: ${SOCKET_TIME_OUT}
+retryTimeout: ${RETRY_TIME_OUT}
+elasticMaxResponseCount: ${MAXIMUM_LIMIT_TO_SEARCH}
+badInputMessage: Search input is not in correct format!
+serviceUnavailableException: Service is currently unavailable, Please try later.
+gnyEntityMapper:  ${GNY_ENTITY_MAPPER}
+gnyEntityMaster:  ${GNY_ENTITY_MASTER}
+encryptedFieldsInCustAccount:
+encryptionKey: ${ENCRYPTION_KEY}
+encryptionFailedException: Something went wrong, Could not encrypt/ decypt the value.
+thresholdErrorMessage: Search result count threshold crossed.
+fieldMatchConfiguration: ${FIELD_MATCH_CONFIGURATION}
+restrictedFieldMatchConfiguration: ${RESTRICTED_FIELD_MATCH_CONFIGURATION}
+searchFieldHiearachy: emp_adid
+empName: emp_name
+userName: ${USER_NAME}
+password: ${PASSWORD}
+defaultSortField: ${DEFAULT_SORT_FIELD}
+defaultSortOrder: ${DEFAULT_SORT_ORDER}
+keycloak:
+  auth-server-url: ${AUTH_SERVER_SERVICE}/auth
+  realm: ${YBL_MS_REALM}
+  resource: ${MS_CLIENT_ID}
+  principal-attribute: preferred_username
+  bearer-only: true
+  public-client: false
+  ssl-required: none
+  disable-trust-manager: true
+  security-constraints:
+    - authRoles:
+        - SEARCH_ENABLED
+      securityCollections:
+        - patterns:
+            - /api/entity/search/*
+logging:
+  level:
+    ROOT: ${LOGGING_LEVEL_ROOT}
+    org:
+      elasticsearch:
+        client: ${ELASTIC_LOGGING_LEVEL}
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "metrics"
+          - "health"
+          - "info"
+          - "prometheus"
+exceptions:
+  mappings:
+    601:
+      message: Elastic - Index Not Found Exception
+      matcher: index_not_found_exception
+    101:
+      matcher: Search Result Count Threshold Crossed Exception
+      message: Search Result Count Threshold Crossed Exception
+    603:
+      message: Elastic - Listner timeout after waiting for 1500 ms
+      matcher: Listner timeout after waiting
+    604:
+      message: Elastic - Illegal Capactiy Exception
+      matcher: Illegal Capactiy
+    605:
+      message: Elastic - Search Phase Exectution Exception
+      matcher: Search_Phase_Exectution_Exception
+    403:
+      message: Search Criteria not in correct format
+      matcher: Search Criteria not in correct format
+field-query-mapping: ${FIELD_QUERY_MAPPING}
+
+---
+
+spring:
+  profiles: dev
+elasticHost: 192.168.7.52
+elasticPort: 9200
+connectionTimeout: 5000
+socketTimeout: 60000
+retryTimeout: 40000
+badInputMessage: Search input is not in correct format!
+serviceUnavailableException: Service is currently unavailable, Please try later.
+encryptedFieldsInCustAccount:
+encryptionKey: encryptionkey123
+encryptionFailedException: Something went wrong, Could not encrypt/ decypt the value.
+thresholdErrorMessage: Search result count threshold crossed.
+dockerImageTest: elasticsearch
+dockerImageVersion: 6.5.2
+dockerElasticPassword: changeme
+dockerElasticUser: elastic
+searchFieldHiearachy: emp_adid
+elasticMaxResponseCount: 10000
+schemaDateFormat: yyyy-mm-dd
+empName: emp_name
+gnyEntityMapper:  ${GNY_ENTITY_MAPPER}
+gnyEntityMaster:  ${GNY_ENTITY_MASTER}
+userName:
+password:
+defaultSortField: cust_open_date
+defaultSortOrder: DESC
+keycloak:
+  enabled: false
+logging:
+  level:
+    ROOT: ${LOGGING_LEVEL_ROOT}
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "metrics"
+          - "health"
+          - "info"
+          - "prometheus"
+exceptions:
+  mappings:
+    601:
+      message: Elastic - Index Not Found Exception
+      matcher: index_not_found_exception
+    101:
+      matcher: Search Result Count Threshold Crossed Exception
+      message: Search Result Count Threshold Crossed Exception
+    603:
+      message: Elastic - Listner timeout after waiting for 1500 ms
+      matcher: Listner timeout after waiting
+    604:
+      message: Elastic - Illegal Capactiy Exception
+      matcher: Illegal Capactiy
+    605:
+      message: Elastic - Search Phase Exectution Exception
+      matcher: Search_Phase_Exectution_Exception
+    403:
+      message: Search Criteria not in correct format
+      matcher: Search Criteria not in correct format
+
+---
+
+spring:
+  profiles: test
+elasticHost: 192.168.7.54
+elasticPort: 9200
+connectionTimeout: 5000
+socketTimeout: 60000
+retryTimeout: 40000
+badInputMessage: Search input is not in correct format!
+serviceUnavailableException: Service is currently unavailable, Please try later.
+encryptedFieldsInCustAccount:
+encryptionKey: encryptionkey123
+encryptionFailedException: Something went wrong, Could not encrypt/ decypt the value.
+thresholdErrorMessage: Search result count threshold crossed.
+dockerImageTest: elasticsearch
+dockerImageVersion: 6.5.2
+dockerElasticPassword: changeme
+dockerElasticUser: elastic
+searchFieldHiearachy: emp_adid
+elasticMaxResponseCount: 10000
+schemaDateFormat: yyyy-mm-dd
+gnyEntityMapper:  ${GNY_ENTITY_MAPPER}
+gnyEntityMaster:  ${GNY_ENTITY_MASTER}
+userName:
+password:
+empName: emp_name
+defaultSortField: cust_open_date
+defaultSortOrder: DESC
+keycloak:
+  enabled: false
+logging:
+  level:
+    ROOT: ${LOGGING_LEVEL_ROOT}
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "metrics"
+          - "health"
+          - "info"
+          - "prometheus"
+exceptions:
+  mappings:
+    601:
+      message: Elastic - Index Not Found Exception
+      matcher: index_not_found_exception
+    101:
+      matcher: Search Result Count Threshold Crossed Exception
+      message: Search Result Count Threshold Crossed Exception
+    603:
+      message: Elastic - Listner timeout after waiting for 1500 ms
+      matcher: Listner timeout after waiting
+    604:
+      message: Elastic - Illegal Capactiy Exception
+      matcher: Illegal Capactiy
+    605:
+      message: Elastic - Search Phase Exectution Exception
+      matcher: Search_Phase_Exectution_Exception
+    403:
+      message: Search Criteria not in correct format
+      matcher: Search Criteria not in correct format

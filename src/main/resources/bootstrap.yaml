@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: entity-search
+server:
+  port: 8080
+
